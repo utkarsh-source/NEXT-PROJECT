@@ -32,3 +32,6 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+#read-only config file 
+.tw.config.js
