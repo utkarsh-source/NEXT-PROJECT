@@ -26,7 +26,6 @@ function Login() {
     })
 
     
-
     const handleFormSubmit = (e) => {
         e.preventDefault();
         if (!usingGoogle) {
@@ -83,6 +82,19 @@ function Login() {
         }
     }
 
+    const handleGoogleSignIn = () => {
+        const provider = new firebase.auth.GoogleAuthProvider()
+            setIsLoading(true)
+            firebase.auth().signInWithPopup(provider)
+                .then(res => {
+                    setIsLoading(false)
+                })
+                .catch(err => {
+                    setIsLoading(false)
+                    console.log(err)
+            })
+    }
+
     return (
         <div className="bg-gray-50 fixed w-screen h-screen top-0 left-0 bottom-0 right-0 flex items-center justify-center">
             <form  className="relative w-5/12" onSubmit={handleFormSubmit}>
@@ -103,7 +115,7 @@ function Login() {
                 </div>}
                 <p className="py-7 text-right px-3">{user.hasAccount ? "Don't have an account?" : "Already have an account?" }<span className="cursor-pointer pl-1.5 text-cyan text-base underline font-extrabold" onClick={()=>setUser(prev=> ({...prev, hasAccount : !prev.hasAccount, passError : "", emailError : ""}))} aria-label="button">{user.hasAccount ? "Create" : "Sign In"}</span></p>
                 <button type="submit" onClick={()=> setUsingGoogle(false)} className="flex items-center justify-center w-full mb-3 btn-indigo"><span className="absolute grid place-items-center left-4"><Image src={lock} alt="Google" width={25} height={25} /></span>   {user.hasAccount ? "Sign In" : "Create Account"}</button>
-                <button type="submit" onClick={()=> setUsingGoogle(true)} className="flex items-center justify-center  w-full plain-btn"><span className="grid place-items-center absolute left-4"><Image src={google} alt="Google" width={25} height={25} /> </span> Sign in with Google</button>
+                <button onClick={handleGoogleSignIn} className="flex items-center justify-center  w-full plain-btn"><span className="grid place-items-center absolute left-4"><Image src={google} alt="Google" width={25} height={25} /> </span> Sign in with Google</button>
             </form>
             {isLoading && <FullPageLoader/>}
         </div>
