@@ -23,11 +23,11 @@ export const sidenavData = [
     },
     {
         icon : FaIdCard,
-        text : "Reports",
+        text : "Report",
     },
     {
         icon : FaCog,
-        text : "Setting",
+        text : "Settings",
     },
     {
         icon : FaQuestionCircle,

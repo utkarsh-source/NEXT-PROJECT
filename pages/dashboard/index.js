@@ -1,7 +1,7 @@
 import { FaCheckCircle, FaHome, FaSyncAlt } from "react-icons/fa"
-import FullPageLoader from '../components/FullPageLoader'
-import getAbsoluteURL from '../utils/getAbsoluteURL'
-import Card from "../components/card"
+import FullPageLoader from '../../components/FullPageLoader'
+import getAbsoluteURL from '../../utils/getAbsoluteURL'
+import Card from "../../components/card"
 import { AuthAction, withAuthUser } from "next-firebase-auth"
 
 function Dashboard() {

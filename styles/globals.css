@@ -15,7 +15,7 @@
     @apply active:scale-95 transform font-semibold rounded-md border-2 shadow-sm border-gray-500 border-opacity-20 px-5 py-3;
   }
   .btn-indigo {
-    @apply plain-btn bg-cyan text-white border-none;
+    @apply plain-btn bg-cyan py-3.5 text-white border-none;
   }
 }
 

@@ -1,19 +1,9 @@
 import React from 'react'
 import ReactLoading from 'react-loading';
 
-const styles = {
-  container: {
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-}
-
 const FullPageLoader = () => (
-  <div style={styles.container}>
-    <ReactLoading type="spin" color="cyan" height={30} width={30} />
+  <div className="z-50 bg-gray-200 fixed top-0 left-0 bottom-0 right-0 w-screen h-screen flex items-center justify-center">
+    <ReactLoading type="spin" color="teal" height={50} width={50} />
   </div>
 )
 

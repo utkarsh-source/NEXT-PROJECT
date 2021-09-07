@@ -7,19 +7,15 @@ const TWELVE_DAYS_IN_MS = 12 * 60 * 60 * 24 * 1000
 const initAuth = () => {
   init({
     debug: true,
-
-    // This demonstrates setting a dynamic destination URL when
-    // redirecting from app pages. Alternatively, you can simply
-    // specify `authPageURL: '/auth-ssr'`.
     authPageURL: ({ ctx }) => {
       const isServerSide = typeof window === 'undefined'
       const origin = isServerSide
         ? absoluteUrl(ctx.req).origin
         : window.location.origin
       const destPath =
-        typeof window === 'undefined' ? ctx.resolvedUrl : window.location.href
+      typeof window === 'undefined' ? ctx.resolvedUrl : window.location.href
       const destURL = new URL(destPath, origin)
-      return `auth-ssr?destination=${encodeURIComponent(destURL)}`
+      return `/auth-ssr?destination=${encodeURIComponent(destURL)}`
     },
 
     // This demonstrates setting a dynamic destination URL when

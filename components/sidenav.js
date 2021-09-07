@@ -3,9 +3,10 @@ import logo from '../assets/logo.svg'
 import profile from '../assets/avatar2.png'
 import Image from 'next/image'
 import React from "react"
-
+import Link from 'next/link'
 
 function Sidenav() {
+
     
     return (
         <div className="bg-cyan -ml-64 md:ml-0 relative w-64 flex-shrink-0 min-h-screen px-3 py-6 ">
@@ -19,7 +20,7 @@ function Sidenav() {
                         {sidenavData.map((nav, index) => {
                             return (
                                 <React.Fragment key={index}>
-                                    <li className="text-md font-medium my-1 px-3 cursor-pointer hover:bg-gray-900 hover:bg-opacity-30 rounded-md flex items-center text-white list-none py-2"><nav.icon className="text-white text-xl mr-5" /> {nav.text}</li>
+                                    <li className="text-md font-medium my-1  cursor-pointer hover:bg-gray-900 hover:bg-opacity-30 rounded-md  text-white list-none"><Link href={'/dashboard/'+nav.text.toLowerCase()}><a className="flex items-center w-full px-3 py-2" ><nav.icon className="text-white text-xl mr-5" />{nav.text}</a></Link></li>
                                     {index === 5 && <hr className="my-3.5 border-t-2 border-gray-300"/> }
                                 </React.Fragment>
                             )

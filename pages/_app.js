@@ -2,11 +2,7 @@ import Sidenav from '../components/sidenav'
 import Header from '../components/Header'
 import '../styles/globals.css'
 import initAuth from '../utils/initAuth'
-import {
-  useAuthUser,
-  withAuthUser,
-  withAuthUserTokenSSR,
-} from 'next-firebase-auth'
+
 
 initAuth()
 

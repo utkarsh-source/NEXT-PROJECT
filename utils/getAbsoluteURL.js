@@ -1,6 +1,7 @@
 /* globals window */
 
 const getAbsoluteURL = (url, req = null) => {
+  console.log(url)
   let host
   if (req) {
     host = req.headers.host

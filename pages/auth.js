@@ -16,7 +16,6 @@ Auth.getLayout = true;
 
 export default withAuthUser({
   whenAuthed: AuthAction.REDIRECT_TO_APP,
-  appPageURL: '/dashboard',
   whenUnauthedBeforeInit: AuthAction.RETURN_NULL,
   whenUnauthedAfterInit: AuthAction.RENDER,
 })(Auth)
