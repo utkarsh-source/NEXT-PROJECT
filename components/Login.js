@@ -115,7 +115,7 @@ function Login() {
                     <span className="text-sm text-cyan font-semibold cursor-pointer">Forgot your password?</span>
                 </div>}
                 <p className="py-7 text-right px-3">{user.hasAccount ? "Don't have an account?" : "Already have an account?"}<span className="cursor-pointer pl-1.5 text-cyan text-base underline font-extrabold" onClick={() => setUser(prev => ({ ...prev, hasAccount: !prev.hasAccount, passError: "", emailError: "" }))} aria-label="button">{user.hasAccount ? "Create" : "Sign In"}</span></p>
-                <div class="w-full md:static absolute bottom-0">
+                <div className="w-full md:static absolute bottom-0">
                     <button type="submit" onClick={()=> setUsingGoogle(false)} className="flex items-center justify-center w-full mb-4 btn-indigo"><span className="absolute grid place-items-center left-4"><Image src={lock} alt="Google" width={30} height={30} /></span>   {user.hasAccount ? "Sign In" : "Create Account"}</button>
                     <button type="button" onClick={handleGoogleSignIn} className="flex items-center justify-center  w-full plain-btn"><span className="grid place-items-center absolute left-4"><Image src={google} alt="Google" width={25} height={25} /> </span> Sign in with Google</button>
                 </div>
