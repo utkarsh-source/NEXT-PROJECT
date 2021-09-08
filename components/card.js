@@ -1,7 +1,7 @@
 
 function Card(props) {
     return (
-        <div className="border w-full shadow-sm border-gray-200 rounded-md">
+        <div className="border w-full border-gray-200 rounded-md">
             <div className="flex items-center px-3 py-6">
                 <props.icon className="text-2xl text-gray-600 text-opacity-60 hover:text-cyan mr-6"/>
                 <div className="">

@@ -16,7 +16,7 @@ function Dashboard() {
             </div>
             <div className="w-full md:px-1 lg:px-5">
                 <h1 className="text-lg font-semibold text-gray-600 pb-4">Overview</h1>
-                <div className="relative w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-y-5 gap-x-4">
+                <div className="relative w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-y-6 gap-x-4">
                     <Card amount="$30,659.45" title="Account balance" icon={FaHome}/>
                     <Card amount="-$19,500.00" title="Pending" icon={FaSyncAlt}/>
                     <Card amount="$20,000" title="Processed (last 30 days)" icon={FaCheckCircle}/>

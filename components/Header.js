@@ -16,7 +16,7 @@ const Header = () => {
   return (
 
     <div className="mb-3 w-full border border-gray-300 flex items-center rounded-md py-3 px-5">
-      <Menu onClick={()=>setToggleNav(!toggleNav)} className="md:hidden inline-block text-cyan text-5xl border rounded-md mr-6"/>
+      <Menu onClick={()=>setToggleNav(!toggleNav)} className="text-cyan text-5xl border border-gray-300 rounded-md mr-6"/>
       {AuthUser.email ? (
         <>
           <p className="hidden lg:block">Signed in as <span className="px-1 underline text-base font-semibold ">{AuthUser.email}</span></p>

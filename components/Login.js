@@ -96,7 +96,7 @@ function Login() {
     }
 
     return (
-        <div className="bg-gray-50 fixed py-5 w-screen h-screen top-0 left-0 bottom-0 right-0 flex md:items-center justify-center">
+        <div className="bg-gray-50 fixed py-5 w-screen top-0 left-0 bottom-0 right-0 flex md:items-center justify-center">
             <form  className="relative w-11/12 md:w-8/12 lg:w-5/12" onSubmit={handleFormSubmit}>
                 <figure className="w-max mx-auto mb-6">
                     <Image src={logo} alt="Workflow logo" width={65} height={65} />

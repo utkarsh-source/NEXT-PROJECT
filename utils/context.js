@@ -15,8 +15,8 @@ function Context({children}) {
 
     const [state, dispatch] = useReducer(reducer, initialState)
 
-    const [toggleNav, setToggleNav] = useState(false)
-    
+    const [toggleNav, setToggleNav] = useState(true)
+
 
 
     return (

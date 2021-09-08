@@ -10,21 +10,29 @@ initAuth()
 
 function MyApp({ Component, pageProps }) {
 
-  const { toggleNav } = useContext(ContextProvider)
   
 
+  
+  
   if (Component.getLayout) {
     return <Context> <Component {...pageProps} /></Context>
+  }
+  
+  const HeaderWrapper = () => {
+    const { toggleNav } = useContext(ContextProvider)
+    return (
+      <div className={`${toggleNav ? 'ml-64' : "ml-0"} transition-m relative w-full md:min-w-min min-w-full p-3`}>
+          <Header />
+          <Component {...pageProps} />
+      </div>
+    )
   }
 
   return (
     <Context>
       <div className="overflow-x-hidden w-screen flex flex-grow-0">
         <Sidenav />
-        <div className={`${toggleNav && "ml-64"} relative w-full md:min-w-min min-w-full p-3 border-2`}>
-          <Header />
-          <Component {...pageProps} />
-        </div>
+        <HeaderWrapper/>
       </div>
     </Context>
     )
