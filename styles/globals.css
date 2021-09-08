@@ -23,6 +23,9 @@ body {
   .text-cyan {
     color: #5a9cb6;
   }
+  .h-max {
+    height: max-content;
+  }
   @varient hover {
     .text-cyan {
       color: #5a9cb6;

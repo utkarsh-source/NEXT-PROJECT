@@ -97,7 +97,7 @@ function Login() {
 
     return (
         <div className="bg-gray-50 fixed py-5 w-screen top-0 left-0 bottom-0 right-0 flex md:items-center justify-center">
-            <form  className="relative w-11/12 md:w-8/12 lg:w-5/12" onSubmit={handleFormSubmit}>
+            <form  className="flex flex-col relative w-11/12 md:w-8/12 lg:w-5/12" onSubmit={handleFormSubmit}>
                 <figure className="w-max mx-auto mb-6">
                     <Image src={logo} alt="Workflow logo" width={65} height={65} />
                 </figure>
@@ -115,7 +115,7 @@ function Login() {
                     <span className="text-sm text-cyan font-semibold cursor-pointer">Forgot your password?</span>
                 </div>}
                 <p className="py-7 text-right px-3">{user.hasAccount ? "Don't have an account?" : "Already have an account?"}<span className="cursor-pointer pl-1.5 text-cyan text-base underline font-extrabold" onClick={() => setUser(prev => ({ ...prev, hasAccount: !prev.hasAccount, passError: "", emailError: "" }))} aria-label="button">{user.hasAccount ? "Create" : "Sign In"}</span></p>
-                <div className="w-full md:static absolute bottom-0">
+                <div className="h-max md:mt-0 mt-auto w-full">
                     <button type="submit" onClick={()=> setUsingGoogle(false)} className="flex items-center justify-center w-full mb-4 btn-indigo"><span className="absolute grid place-items-center left-4"><Image src={lock} alt="Google" width={30} height={30} /></span>   {user.hasAccount ? "Sign In" : "Create Account"}</button>
                     <button type="button" onClick={handleGoogleSignIn} className="flex items-center justify-center  w-full plain-btn"><span className="grid place-items-center absolute left-4"><Image src={google} alt="Google" width={25} height={25} /> </span> Sign in with Google</button>
                 </div>
