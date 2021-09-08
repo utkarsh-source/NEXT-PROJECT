@@ -22,7 +22,7 @@ function Sidenav() {
                         {sidenavData.map((nav, index) => {
                             return (
                                 <React.Fragment key={index}>
-                                    <li className="text-md font-medium my-1  cursor-pointer hover:bg-gray-900 hover:bg-opacity-30 rounded-md  text-white list-none"><Link href={'/dashboard/'+nav.text.toLowerCase()}><a className="flex items-center w-full px-3 py-2" ><nav.icon className="text-white text-xl mr-5" />{nav.text}</a></Link></li>
+                                    <li className="text-md font-medium my-1  cursor-pointer hover:bg-gray-900 hover:bg-opacity-30 rounded-md  text-white list-none"><Link href={index ===0 ? "/dashboard" : '/dashboard/'+nav.text.toLowerCase()}><a className="flex items-center w-full px-3 py-2" ><nav.icon className="text-white text-xl mr-5" />{nav.text}</a></Link></li>
                                     {index === 5 && <hr className="my-3.5 border-t-2 border-gray-300"/> }
                                 </React.Fragment>
                             )

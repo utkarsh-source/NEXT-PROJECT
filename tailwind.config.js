@@ -7,6 +7,9 @@ module.exports = {
     extend: {
       transitionProperty: {
         m : 'margin'
+      },
+      boxShadow : {
+        outer : '0 0 2px 0 rgba(0, 0, 0, 0.2)'
       }
     },
   },

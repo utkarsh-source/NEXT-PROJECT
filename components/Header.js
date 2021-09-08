@@ -15,12 +15,12 @@ const Header = () => {
 
   return (
 
-    <div className="mb-3 w-full flex-shrink-0 flex items-center rounded-full shadow-sm py-3 px-5 border-2 border-gray-100">
-      <Menu onClick={()=>setToggleNav(!toggleNav)} className="md:hidden inline-block text-cyan text-5xl border-2 rounded-md mr-6"/>
+    <div className="mb-3 w-full border border-gray-300 flex items-center rounded-md py-3 px-5">
+      <Menu onClick={()=>setToggleNav(!toggleNav)} className="md:hidden inline-block text-cyan text-5xl border rounded-md mr-6"/>
       {AuthUser.email ? (
         <>
           <p className="hidden lg:block">Signed in as <span className="px-1 underline text-base font-semibold ">{AuthUser.email}</span></p>
-          <button className="plain-btn flex items-center ml-auto rounded-full"
+          <button className="plain-btn flex items-center ml-auto"
             type="button"
             onClick={() => {
               AuthUser.signOut()

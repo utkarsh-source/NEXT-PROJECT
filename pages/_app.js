@@ -21,7 +21,7 @@ function MyApp({ Component, pageProps }) {
     <Context>
       <div className="overflow-x-hidden w-screen flex flex-grow-0">
         <Sidenav />
-        <div className={`${toggleNav && "ml-64"} relative w-full md:min-w-min min-w-full p-3`}>
+        <div className={`${toggleNav && "ml-64"} relative w-full md:min-w-min min-w-full p-3 border-2`}>
           <Header />
           <Component {...pageProps} />
         </div>

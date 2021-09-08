@@ -3,16 +3,9 @@
 @tailwind components;
 @tailwind utilities;
 
-.bg-cyan {
-  background-color: #5a9cb6;
-}
-.text-cyan {
-  color: #5a9cb6;
-}
-
 @layer components {
   .plain-btn {
-    @apply active:scale-95 transform font-semibold rounded-md border-2 shadow-sm border-gray-500 border-opacity-20 px-5 py-3;
+    @apply active:scale-95 transform font-light rounded-md border shadow-sm border-gray-300  px-5 py-3;
   }
   .btn-indigo {
     @apply plain-btn bg-cyan py-3.5 text-white border-none;
@@ -24,6 +17,12 @@ body {
 }
 
 @layer utilities {
+  .bg-cyan {
+    background-color: #5a9cb6;
+  }
+  .text-cyan {
+    color: #5a9cb6;
+  }
   @varient hover {
     .text-cyan {
       color: #5a9cb6;
