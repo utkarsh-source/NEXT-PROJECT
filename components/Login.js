@@ -6,6 +6,8 @@ import firebase from 'firebase'
 import { useState } from "react";
 import FullPageLoader from '../components/FullPageLoader'
 import {FaEye, FaEyeSlash} from 'react-icons/fa'
+import { client } from "../utils/apolloClient";
+import { USER_BY_EMAIL_ID } from "../utils/gqlQuery";
 
 function Login() {
 
@@ -19,17 +21,37 @@ function Login() {
         name: "",
         email: "",
         password: "",
-        hasAccount: false,
+        hasAccount: true,
         emailError: "",
         passError: "",
-        remember : false,
+        remember: false,
+        success : "",
     })
 
     
-    const handleFormSubmit = (e) => {
+    const handleFormSubmit = async (e) => {
         e.preventDefault();
+        
         if (!usingGoogle) {
             if (user.hasAccount) {
+                try {
+                    setIsLoading(true)
+                    const res = await client.query({
+                        query: USER_BY_EMAIL_ID,
+                        variables: {
+                            email : user.email
+                        }
+                    })
+                    setIsLoading(false)
+                    if (!res.data.current_user_by_pk) {
+                        setUser(prev => ({ ...prev, emailError: "Provided email does not match any user in our database!" }))
+                        return
+                    }
+                } catch (err) {
+                    console.log(err)
+                    setIsLoading(false)
+                    return
+                }
                 setIsLoading(true)
                 firebase
                     .auth()
@@ -39,12 +61,13 @@ function Login() {
                     })
                     .catch(err => {
                         setIsLoading(false);
-                        console.log(err)
                         switch (err.code) {
                             case 'auth/invalid-email':
                             case 'auth/user-disabled':
-                            case 'auth/user-not-found':
                                 setUser(prev => ({ ...prev, emailError: err.message }))
+                                break;
+                            case 'auth/user-not-found':
+                                setUser(prev => ({ ...prev, emailError: "There is no such user, try creating an account first!" }))
                                 break;
                             case 'auth/wrong-password':
                                 setUser(prev => ({ ...prev, passError: err.message }))
@@ -57,16 +80,11 @@ function Login() {
                     .auth()
                     .createUserWithEmailAndPassword(user.email, user.password)
                     .then(res => {
-                        firebase
-                            .auth()
-                            .signInWithEmailAndPassword(user.email, user.password)
-                            .then(res => {
-                                setIsLoading(false);
-                            })
+                        setUser(prev=> ({...prev, success : "Account created successfully", password: ""}))
+                        return
                     })
                     .catch(err => {
                         setIsLoading(false);
-                        console.log(err)
                         switch (err.code) {
                             case 'auth/email-already-in-use':
                             case 'auth/invalid-email':
@@ -110,6 +128,7 @@ function Login() {
                 </div>
                 {user.emailError != "" && <p className="mt-4 rounded-lg bg-red-100 px-3 text-sm text-red-700 font-semibold py-3">{user.emailError}</p>}
                 {user.passError != "" && <p className="mt-4 rounded-lg bg-red-100 px-3 text-sm text-red-700 font-semibold py-3">{user.passError}</p>}
+                {user.success != "" && <p className="mt-4 rounded-lg bg-green-100 px-3 text-sm text-green-700 font-semibold py-3">{user.success}</p>}
                 {user.hasAccount && <div className="px-3 flex items-center justify-between py-4">
                     <p className="flex items-center"><input onChange={(e) => setUser(prev => ({ ...prev, remember: e.target.checked }))} value={user.remember} className="transform scale-125 mr-3" type="checkbox" name="checkbox" />Remember me</p>
                     <span className="text-sm text-cyan font-semibold cursor-pointer">Forgot your password?</span>
