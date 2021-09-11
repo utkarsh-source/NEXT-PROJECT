@@ -10,7 +10,7 @@ function Verify({ children }) {
     
     const {setDatabaseMatchError, usingGoogleSignIn} = useContext(ContextProvider)
     
-    const [isLoading, setIsloding] = useState(false)
+    const [isLoading, setIsloding] = useState(true)
         
     const AuthUser = useAuthUser()
 
