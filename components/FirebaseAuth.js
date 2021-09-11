@@ -21,14 +21,18 @@ const firebaseAuthConfig = {
       requireDisplayName: false,
     },
   ],
+
   signInSuccessUrl: '/',
   credentialHelper: 'none',
+  
   callbacks: {
     // https://github.com/firebase/firebaseui-web#signinsuccesswithauthresultauthresult-redirecturl
-    signInSuccessWithAuthResult: () =>
+    signInSuccessWithAuthResult: (authResu) => {
+      console.log("authResult--------------------------->", authResult)
       // Don't automatically redirect. We handle redirects using
       // `next-firebase-auth`.
-      false,
+      return false
+    }
   },
 }
 

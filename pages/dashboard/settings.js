@@ -1,18 +1,14 @@
-import { AuthAction, withAuthUser } from "next-firebase-auth"
-import FullPageLoader from "../../components/FullPageLoader"
+import Verify from "../../components/HOC/isVerified"
 
 function Settings() {
+    
     return (
-        <div>
+        <Verify srr={true}>
             <h1>Setting page</h1>
-        </div>
+        </Verify>
     )
 }
 
 
-export default withAuthUser({
-    whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
-    whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
-    LoaderComponent: FullPageLoader
-})(Settings)
+export default Settings
 

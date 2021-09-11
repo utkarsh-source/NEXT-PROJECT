@@ -11,16 +11,20 @@ const reducer = (state, { type, payload }) => {
     
 }
 
+
 function Context({children}) {
 
     const [state, dispatch] = useReducer(reducer, initialState)
 
     const [toggleNav, setToggleNav] = useState(true)
 
+    const [databaseMatchError, setDatabaseMatchError] = useState("")
+    const [usingGoogleSignIn, setUsingGoogleSignIn] = useState(false)
+
 
 
     return (
-        <ContextProvider.Provider value={{state, dispatch, toggleNav, setToggleNav}} >
+        <ContextProvider.Provider value={{state, dispatch, toggleNav, setToggleNav, databaseMatchError, setDatabaseMatchError, usingGoogleSignIn, setUsingGoogleSignIn}} >
             {children}
         </ContextProvider.Provider>
     )

@@ -15,6 +15,9 @@ const initAuth = () => {
       const destPath =
       typeof window === 'undefined' ? ctx.resolvedUrl : window.location.href
       const destURL = new URL(destPath, origin)
+      if (String(destURL).endsWith('/dashboard')) {
+        return `/auth`
+      }
       return `/auth-ssr?destination=${encodeURIComponent(destURL)}`
     },
 

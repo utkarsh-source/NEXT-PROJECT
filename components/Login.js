@@ -3,18 +3,19 @@ import logo from '../assets/logo-cyan.svg';
 import google from '../assets/search.png';
 import lock from '../assets/lock.png';
 import firebase from 'firebase'
-import { useState } from "react";
+import { useContext, useState } from "react";
 import FullPageLoader from '../components/FullPageLoader'
 import {FaEye, FaEyeSlash} from 'react-icons/fa'
 import { client } from "../utils/apolloClient";
 import { USER_BY_EMAIL_ID } from "../utils/gqlQuery";
 import {useAuthUser, withAuthUser} from "next-firebase-auth";
+import { ContextProvider } from "../utils/context";
 
 
 
 function Login() {
 
-    const AuthUser = useAuthUser()
+    const {setDatabaseMatchError, databaseMatchError, setUsingGoogleSignIn} = useContext(ContextProvider)
 
     const [isLoading, setIsLoading] = useState(false)
 
@@ -35,6 +36,7 @@ function Login() {
     
     const handleFormSubmit = async (e) => {
         e.preventDefault();
+        setUsingGoogleSignIn(false)
         if (user.hasAccount) {
                 try {
                     setIsLoading(true)
@@ -46,7 +48,7 @@ function Login() {
                     })
                     setIsLoading(false)
                     if (!res.data.current_user_by_pk) {
-                        setUser(prev => ({ ...prev, emailError: "Provided user email does not match any user in out database!" }))
+                        setDatabaseMatchError("Provided user email does not match any user in out database!")
                         return
                     }
                 } catch (err) {
@@ -101,23 +103,12 @@ function Login() {
             }
     }
 
-    const handleGoogleSignIn =async () => {
+    const handleGoogleSignIn = async () => {
+        setUsingGoogleSignIn(true)
         const provider = new firebase.auth.GoogleAuthProvider()
         setIsLoading(true)
-        const {user} = await firebase.auth().signInWithPopup(provider)
-        // const res  = await client.query({
-        //     query: USER_BY_EMAIL_ID,
-        //     variables: {
-        //         email : user.email
-        //     }
-        // })
-        // if (!res.data.current_user_by_pk) {
-        //         setUser(prev => ({ ...prev, emailError: "Provided user email does not match any user in out database!" }))
-        //         firebase.auth().signOut()
-        //         setIsLoading(false)
-        //         console.log("----------------------->", AuthUser)
-        //     }
-            setIsLoading(false)
+        await firebase.auth().signInWithPopup(provider)
+        setIsLoading(false)
     }
 
     return (
@@ -128,12 +119,19 @@ function Login() {
                 </figure>
                 <h1 className="text-center text-3xl font-extrabold pb-10">Sign in to your account</h1>
                 <div className="border relative flex flex-col rounded-lg overflow-hidden">
-                    <input onChange={(e) => setUser(prev => ({ ...prev, email: e.target.value, passError: "", emailError: "" }))} value={user.email} className="focus:outline-none   py-4 px-5 bg-white" type="email" name="email" placeholder="Email address" required />
-                    <div className="relative w-full"><input on Change={(e) => setUser(prev => ({ ...prev, password: e.target.value, passError: "", emailError: "" }))} value={user.password} className="w-full focus:outline-none  
+                    <input onChange={(e) => {
+                        setUser(prev => ({ ...prev, email: e.target.value, passError: "", emailError: "" }))
+                        setDatabaseMatchError("")
+                    }} value={user.email} className="focus:outline-none   py-4 px-5 bg-white" type="email" name="email" placeholder="Email address" required />
+                    <div className="relative w-full"><input onChange={(e) => {
+                        setUser(prev => ({ ...prev, password: e.target.value, passError: "", emailError: "" }))
+                        setDatabaseMatchError("")
+                    }} value={user.password} className="w-full focus:outline-none
                     border-t py-4 px-5 bg-white" type={show ? "text" : "password"} name="password" placeholder={user.hasAccount ? "Password" : "Create Password"} required />{show ? <FaEyeSlash onClick={() => setShow(false)} className="z-50 top-1/2 transform -translate-y-1/2 absolute right-4 text-gray-400 cursor-pointer text-2xl" /> : <FaEye onClick={() => setShow(true)} className="z-50 top-1/2 transform -translate-y-1/2 absolute right-4 text-gray-400 cursor-pointer text-2xl" />}</div>
                     
                 </div>
                 {user.emailError != "" && <p className="mt-4 rounded-lg bg-red-100 px-3 text-sm text-red-700 font-semibold py-3">{user.emailError}</p>}
+                {databaseMatchError != "" && <p className="mt-4 rounded-lg bg-red-100 px-3 text-sm text-red-700 font-semibold py-3">{databaseMatchError}</p>}
                 {user.passError != "" && <p className="mt-4 rounded-lg bg-red-100 px-3 text-sm text-red-700 font-semibold py-3">{user.passError}</p>}
                 {user.success != "" && <p className="mt-4 rounded-lg bg-green-100 px-3 text-sm text-green-700 font-semibold py-3">{user.success}</p>}
                 {user.hasAccount && <div className="px-3 flex items-center justify-between py-4">
