@@ -129,7 +129,7 @@ function Login() {
                 <h1 className="text-center text-3xl font-extrabold pb-10">Sign in to your account</h1>
                 <div className="border relative flex flex-col rounded-lg overflow-hidden">
                     <input onChange={(e) => setUser(prev => ({ ...prev, email: e.target.value, passError: "", emailError: "" }))} value={user.email} className="focus:outline-none   py-4 px-5 bg-white" type="email" name="email" placeholder="Email address" required />
-                    <div className="relative w-full"><input onChange={(e) => setUser(prev => ({ ...prev, password: e.target.value, passError: "", emailError: "" }))} value={user.password} className="w-full focus:outline-none  
+                    <div className="relative w-full"><input on Change={(e) => setUser(prev => ({ ...prev, password: e.target.value, passError: "", emailError: "" }))} value={user.password} className="w-full focus:outline-none  
                     border-t py-4 px-5 bg-white" type={show ? "text" : "password"} name="password" placeholder={user.hasAccount ? "Password" : "Create Password"} required />{show ? <FaEyeSlash onClick={() => setShow(false)} className="z-50 top-1/2 transform -translate-y-1/2 absolute right-4 text-gray-400 cursor-pointer text-2xl" /> : <FaEye onClick={() => setShow(true)} className="z-50 top-1/2 transform -translate-y-1/2 absolute right-4 text-gray-400 cursor-pointer text-2xl" />}</div>
                     
                 </div>
@@ -141,7 +141,7 @@ function Login() {
                     <span className="text-sm text-cyan font-semibold cursor-pointer">Forgot your password?</span>
                 </div>}
                 <p className="py-7 text-right px-3">{user.hasAccount ? "Don't have an account?" : "Already have an account?"}<span className="cursor-pointer pl-1.5 text-cyan text-base underline font-extrabold" onClick={() => setUser(prev => ({ ...prev, hasAccount: !prev.hasAccount, passError: "", emailError: "" }))} aria-label="button">{user.hasAccount ? "Create" : "Sign In"}</span></p>
-                <div className="h-max md:mt-0 mt-auto w-full">
+                <div className="md:static fixed left-0 px-5 md:px-0 bottom-5 w-full">
                     <button type="submit" className="flex items-center justify-center w-full mb-4 btn-indigo"><span className="absolute grid place-items-center left-4"><Image src={lock} alt="Google" width={30} height={30} /></span>   {user.hasAccount ? "Sign In" : "Create Account"}</button>
                     <button type="button" onClick={handleGoogleSignIn} className="flex items-center justify-center  w-full plain-btn"><span className="grid place-items-center absolute left-4"><Image src={google} alt="Google" width={25} height={25} /> </span> Sign in with Google</button>
                 </div>
