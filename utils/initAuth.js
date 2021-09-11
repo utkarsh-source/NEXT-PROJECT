@@ -21,6 +21,7 @@ const initAuth = () => {
     // This demonstrates setting a dynamic destination URL when
     // redirecting from auth pages. Alternatively, you can simply
     // specify `appPageURL: '/'`.
+    
     appPageURL: ({ ctx }) => {
       const isServerSide = typeof window === 'undefined'
       const origin = isServerSide
@@ -35,22 +36,23 @@ const initAuth = () => {
 
       // By default, go to the index page if the destination URL
       // is invalid or unspecified.
-      let destURL = '/'
+      let destURL = '/dashboard'
       if (destinationParamVal) {
         // Verify the redirect URL host is allowed.
         // https://owasp.org/www-project-web-security-testing-guide/v41/4-Web_Application_Security_Testing/11-Client_Side_Testing/04-Testing_for_Client_Side_URL_Redirect
-        const allowedHosts = ['localhost:3000', 'next-project-theta.vercel.app', 'next-project-eysndktjg-utkarsh-source.vercel.app']
+        const allowedHosts = ['localhost:3000', 'next-project-theta.vercel.app']
         const allowed =
           allowedHosts.indexOf(new URL(destinationParamVal).host) > -1
         if (allowed) {
           destURL = destinationParamVal
         } else {
+          destURL = '/dashboard'
           // eslint-disable-next-line no-console
-          console.warn(
-            `Redirect destination host must be one of ${allowedHosts.join(
-              ', '
-            )}.`
-          )
+          // console.warn(
+          //   `Redirect destination host must be one of ${allowedHosts.join(
+          //     ', '
+          //   )}.`
+          // )
         }
       }
       return destURL

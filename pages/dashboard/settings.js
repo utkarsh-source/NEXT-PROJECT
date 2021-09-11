@@ -11,7 +11,8 @@ function Settings() {
 
 
 export default withAuthUser({
-    whenUnauthedBeforeInit: AuthAction.RETURN_NULL,
+    whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
     whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
+    LoaderComponent: FullPageLoader
 })(Settings)
 

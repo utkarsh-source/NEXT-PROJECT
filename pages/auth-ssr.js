@@ -4,13 +4,16 @@ import {
   withAuthUserTokenSSR,
   AuthAction,
 } from 'next-firebase-auth'
-import FirebaseAuth from '../components/FirebaseAuth'
 import Login from '../components/Login'
 
 
-const Auth = () => (
-  <Login/>
-)
+const Auth = () => {
+
+  return (
+    <Login/>  
+  )
+}
+
 
 export const getServerSideProps = withAuthUserTokenSSR({
   whenAuthed: AuthAction.REDIRECT_TO_APP,

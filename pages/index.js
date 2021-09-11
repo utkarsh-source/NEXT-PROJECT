@@ -1,6 +1,5 @@
-import { AuthAction, withAuthUser } from 'next-firebase-auth'
 import Head from 'next/head'
-import FullPageLoader from '../components/FullPageLoader'
+
 function Home() {
   return (
     <div>

@@ -2,11 +2,9 @@ import { FaCheckCircle, FaHome, FaSyncAlt } from "react-icons/fa"
 import FullPageLoader from '../../components/FullPageLoader'
 import getAbsoluteURL from '../../utils/getAbsoluteURL'
 import Card from "../../components/card"
-import { AuthAction, withAuthUser } from "next-firebase-auth"
+import { AuthAction, withAuthUser} from "next-firebase-auth"
 
 function Dashboard() {
-
-
 
     return (
         <section className="relative w-full">
@@ -29,5 +27,6 @@ function Dashboard() {
 export default withAuthUser({
     whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
     whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
-    LoaderComponent: FullPageLoader,  
+    authPageURL : "/auth",
+    LoaderComponent: FullPageLoader,
 })(Dashboard)

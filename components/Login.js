@@ -8,10 +8,13 @@ import FullPageLoader from '../components/FullPageLoader'
 import {FaEye, FaEyeSlash} from 'react-icons/fa'
 import { client } from "../utils/apolloClient";
 import { USER_BY_EMAIL_ID } from "../utils/gqlQuery";
+import {useAuthUser, withAuthUser} from "next-firebase-auth";
+
+
 
 function Login() {
 
-    const [usingGoogle, setUsingGoogle] = useState(false)
+    const AuthUser = useAuthUser()
 
     const [isLoading, setIsLoading] = useState(false)
 
@@ -25,15 +28,14 @@ function Login() {
         emailError: "",
         passError: "",
         remember: false,
-        success : "",
+        success: "",
     })
 
     
+    
     const handleFormSubmit = async (e) => {
         e.preventDefault();
-        
-        if (!usingGoogle) {
-            if (user.hasAccount) {
+        if (user.hasAccount) {
                 try {
                     setIsLoading(true)
                     const res = await client.query({
@@ -44,7 +46,7 @@ function Login() {
                     })
                     setIsLoading(false)
                     if (!res.data.current_user_by_pk) {
-                        setUser(prev => ({ ...prev, emailError: "Provided email does not match any user in our database!" }))
+                        setUser(prev => ({ ...prev, emailError: "Provided user email does not match any user in out database!" }))
                         return
                     }
                 } catch (err) {
@@ -97,20 +99,25 @@ function Login() {
                         }
                     })
             }
-        }
     }
 
-    const handleGoogleSignIn = () => {
+    const handleGoogleSignIn =async () => {
         const provider = new firebase.auth.GoogleAuthProvider()
-            setIsLoading(true)
-            firebase.auth().signInWithPopup(provider)
-                .then(res => {
-                    setIsLoading(false)
-                })
-                .catch(err => {
-                    setIsLoading(false)
-                    console.log(err)
-            })
+        setIsLoading(true)
+        const {user} = await firebase.auth().signInWithPopup(provider)
+        // const res  = await client.query({
+        //     query: USER_BY_EMAIL_ID,
+        //     variables: {
+        //         email : user.email
+        //     }
+        // })
+        // if (!res.data.current_user_by_pk) {
+        //         setUser(prev => ({ ...prev, emailError: "Provided user email does not match any user in out database!" }))
+        //         firebase.auth().signOut()
+        //         setIsLoading(false)
+        //         console.log("----------------------->", AuthUser)
+        //     }
+            setIsLoading(false)
     }
 
     return (
@@ -135,7 +142,7 @@ function Login() {
                 </div>}
                 <p className="py-7 text-right px-3">{user.hasAccount ? "Don't have an account?" : "Already have an account?"}<span className="cursor-pointer pl-1.5 text-cyan text-base underline font-extrabold" onClick={() => setUser(prev => ({ ...prev, hasAccount: !prev.hasAccount, passError: "", emailError: "" }))} aria-label="button">{user.hasAccount ? "Create" : "Sign In"}</span></p>
                 <div className="h-max md:mt-0 mt-auto w-full">
-                    <button type="submit" onClick={()=> setUsingGoogle(false)} className="flex items-center justify-center w-full mb-4 btn-indigo"><span className="absolute grid place-items-center left-4"><Image src={lock} alt="Google" width={30} height={30} /></span>   {user.hasAccount ? "Sign In" : "Create Account"}</button>
+                    <button type="submit" className="flex items-center justify-center w-full mb-4 btn-indigo"><span className="absolute grid place-items-center left-4"><Image src={lock} alt="Google" width={30} height={30} /></span>   {user.hasAccount ? "Sign In" : "Create Account"}</button>
                     <button type="button" onClick={handleGoogleSignIn} className="flex items-center justify-center  w-full plain-btn"><span className="grid place-items-center absolute left-4"><Image src={google} alt="Google" width={25} height={25} /> </span> Sign in with Google</button>
                 </div>
             </form>
@@ -144,4 +151,4 @@ function Login() {
     )
 }
 
-export default Login
+export default withAuthUser()(Login)

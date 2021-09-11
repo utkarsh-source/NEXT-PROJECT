@@ -22,8 +22,8 @@ function MyApp({ Component, pageProps }) {
     const { toggleNav } = useContext(ContextProvider)
     return (
       <div className={`${toggleNav ? 'ml-64' : "ml-0"} transition-m relative w-full md:min-w-min min-w-full p-3`}>
-          <Header />
-          <Component {...pageProps} />
+        <Header />
+        <Component {...pageProps} />
       </div>
     )
   }
