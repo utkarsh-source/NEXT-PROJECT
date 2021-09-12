@@ -25,7 +25,7 @@ function Verify({ children }) {
                 if (!data.current_user_by_pk) {
                     setUserIsLoaded(false);
                     AuthUser.signOut();
-                    setDatabaseMatchError("Provided user email does not match any user in out database!")
+                    setDatabaseMatchError("Provided user email does not match any user in our database!")
                 } else {
                     setUserIsLoaded(true)
                 }

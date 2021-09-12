@@ -5,7 +5,7 @@
 
 @layer components {
   .plain-btn {
-    @apply active:scale-95 transform font-light rounded-md border shadow-sm border-gray-300  px-5 py-3;
+    @apply active:scale-95 bg-white transform font-light rounded-md border shadow-sm border-gray-300  px-5 py-3;
   }
   .btn-indigo {
     @apply plain-btn bg-cyan py-3.5 text-white border-none;

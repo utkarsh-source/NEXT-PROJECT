@@ -48,7 +48,7 @@ function Login() {
                     })
                     setIsLoading(false)
                     if (!res.data.current_user_by_pk) {
-                        setDatabaseMatchError("Provided user email does not match any user in out database!")
+                        setDatabaseMatchError("Provided user email does not match any user in our database!")
                         return
                     }
                 } catch (err) {
@@ -130,10 +130,10 @@ function Login() {
                     border-t py-4 px-5 bg-white" type={show ? "text" : "password"} name="password" placeholder={user.hasAccount ? "Password" : "Create Password"} required />{show ? <FaEyeSlash onClick={() => setShow(false)} className="z-50 top-1/2 transform -translate-y-1/2 absolute right-4 text-gray-400 cursor-pointer text-2xl" /> : <FaEye onClick={() => setShow(true)} className="z-50 top-1/2 transform -translate-y-1/2 absolute right-4 text-gray-400 cursor-pointer text-2xl" />}</div>
                     
                 </div>
-                {user.emailError != "" && <p className="mt-4 rounded-lg bg-red-100 px-3 text-sm text-red-700 font-semibold py-3">{user.emailError}</p>}
-                {databaseMatchError != "" && <p className="mt-4 rounded-lg bg-red-100 px-3 text-sm text-red-700 font-semibold py-3">{databaseMatchError}</p>}
-                {user.passError != "" && <p className="mt-4 rounded-lg bg-red-100 px-3 text-sm text-red-700 font-semibold py-3">{user.passError}</p>}
-                {user.success != "" && <p className="mt-4 rounded-lg bg-green-100 px-3 text-sm text-green-700 font-semibold py-3">{user.success}</p>}
+                {user.emailError != "" && <p className="mt-4 rounded-lg bg-red-100 px-5 text-sm text-red-700 font-semibold py-3">{user.emailError}</p>}
+                {databaseMatchError != "" && <p className="mt-4 rounded-lg bg-red-100 px-5 text-sm text-red-700 font-semibold py-3">{databaseMatchError}</p>}
+                {user.passError != "" && <p className="mt-4 rounded-lg bg-red-100 px-5 text-sm text-red-700 font-semibold py-3">{user.passError}</p>}
+                {user.success != "" && <p className="mt-4 rounded-lg bg-green-100 px-5 text-sm text-green-700 font-semibold py-3">{user.success}</p>}
                 {user.hasAccount && <div className="px-3 flex items-center justify-between py-4">
                     <p className="flex items-center"><input onChange={(e) => setUser(prev => ({ ...prev, remember: e.target.checked }))} value={user.remember} className="transform scale-125 mr-3" type="checkbox" name="checkbox" />Remember me</p>
                     <span className="text-sm text-cyan font-semibold cursor-pointer">Forgot your password?</span>
