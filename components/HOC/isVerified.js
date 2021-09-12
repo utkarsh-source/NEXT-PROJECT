@@ -9,35 +9,37 @@ import { ContextProvider } from "../../utils/context"
 function Verify({ children }) {
     
     const {setDatabaseMatchError, usingGoogleSignIn} = useContext(ContextProvider)
-    
-    const [isLoading, setIsloding] = useState(true)
-        
+
+    const [userIsLoaded, setUserIsLoaded] = useState(false);
+            
     const AuthUser = useAuthUser()
 
     useEffect(() => {
         if (AuthUser.email && usingGoogleSignIn) {
-            setIsloding(true)
             client.query({
                 query: USER_BY_EMAIL_ID,
                 variables: {
                     email: AuthUser.email
                 }
             }).then(({ data }) => {
-                console.log(data);
                 if (!data.current_user_by_pk) {
-                    setDatabaseMatchError("Provided user email does not match any user in out database!")
+                    setUserIsLoaded(false);
                     AuthUser.signOut();
+                    setDatabaseMatchError("Provided user email does not match any user in out database!")
+                } else {
+                    setUserIsLoaded(true)
                 }
-                setIsloding(false);
             }).catch(err => {
                 console.log(err);
-                setIsloding(false);
+                setUserIsLoaded(false);
             })
     
+        } else {
+            setUserIsLoaded(true)
         }
     }, [])
     
-    return isLoading ?  <FullPageLoader />  : <>{children}</>
+    return userIsLoaded ? <>{children}</> : <FullPageLoader/> 
 }
 
 

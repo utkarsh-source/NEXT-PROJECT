@@ -18,6 +18,9 @@ function Context({children}) {
 
     const [toggleNav, setToggleNav] = useState(true)
 
+    const [userIsLoading, setUserIsLoading] = useState(true)
+    
+
     const [databaseMatchError, setDatabaseMatchError] = useState("")
     const [usingGoogleSignIn, setUsingGoogleSignIn] = useState(false)
 
