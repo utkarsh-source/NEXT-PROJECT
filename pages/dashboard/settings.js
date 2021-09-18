@@ -1,14 +1,14 @@
-import Verify from "../../components/HOC/isVerified"
+import { AuthAction, withAuthUser } from "next-firebase-auth"
 
 function Settings() {
     
     return (
-        <Verify>
             <h1>Setting page</h1>
-        </Verify>
     )
 }
 
 
-export default Settings
+export default withAuthUser({
+    whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
+})(Settings)
 

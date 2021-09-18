@@ -1,19 +1,16 @@
 import Sidenav from '../components/sidenav'
 import Header from '../components/Header'
-import '../styles/globals.css'
 import initAuth from '../utils/initAuth'
 import Context, { ContextProvider } from '../utils/context'
 import { useContext } from 'react'
+import '../styles/globals.css'
 
 
 initAuth()
 
 function MyApp({ Component, pageProps }) {
 
-  
-
-  
-  
+    
   if (Component.getLayout) {
     return <Context> <Component {...pageProps} /></Context>
   }
@@ -23,7 +20,7 @@ function MyApp({ Component, pageProps }) {
     return (
       <div className={`${toggleNav ? 'ml-64' : "ml-0"} transition-m relative w-full md:min-w-min min-w-full p-3`}>
         <Header />
-        <Component {...pageProps} />
+          <Component {...pageProps} />
       </div>
     )
   }

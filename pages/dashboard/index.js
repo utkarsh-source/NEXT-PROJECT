@@ -1,13 +1,11 @@
+import { AuthAction, withAuthUser } from "next-firebase-auth"
 import { FaCheckCircle, FaHome, FaSyncAlt } from "react-icons/fa"
 import Card from "../../components/card"
-import Verify from "../../components/HOC/isVerified"
 
 
 function Dashboard() {
 
-
     return (
-        <Verify>
                     <section className="relative w-full">
                         <div className="flex items-center justify-end py-4  md:px-1 lg:px-5">
                             <button className="mr-3 plain-btn">Add money</button>
@@ -22,10 +20,11 @@ function Dashboard() {
                             </div>
                         </div>
                     </section>
-        </Verify>
     )
 }
 
 
-export default Dashboard
+export default withAuthUser({
+    whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
+})(Dashboard)
 

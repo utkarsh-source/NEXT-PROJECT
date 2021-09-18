@@ -1,4 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Rubik&display=swap");
+@import "react-toastify/dist/ReactToastify.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -14,6 +16,36 @@
 
 body {
   font-family: "Rubik";
+}
+
+.Toastify__progress-bar {
+  background-color: white;
+}
+.Toastify__close-button {
+  color: #fff;
+  background: transparent;
+  outline: none;
+  cursor: pointer;
+  opacity: 1;
+  align-self: flex-start;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+.Toastify__close-button--default {
+  color: #000;
+  opacity: 0.3;
+}
+.Toastify__close-button > svg {
+  fill: white;
+  height: 2rem;
+  width: 2rem;
+  stroke: white;
+  stroke-width: 0.5;
+  transition: 0.3s ease;
+}
+.Toastify__close-button > svg:active {
+  transform: scale(0.9);
 }
 
 @layer utilities {

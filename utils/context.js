@@ -18,16 +18,15 @@ function Context({children}) {
 
     const [toggleNav, setToggleNav] = useState(true)
 
-    const [userIsLoading, setUserIsLoading] = useState(true)
+    const [userIsLoading, setUserIsLoading] = useState(false)
     
 
     const [databaseMatchError, setDatabaseMatchError] = useState("")
-    const [usingGoogleSignIn, setUsingGoogleSignIn] = useState(false)
 
 
 
     return (
-        <ContextProvider.Provider value={{state, dispatch, toggleNav, setToggleNav, databaseMatchError, setDatabaseMatchError, usingGoogleSignIn, setUsingGoogleSignIn}} >
+        <ContextProvider.Provider value={{state, dispatch, toggleNav, setToggleNav, databaseMatchError, setDatabaseMatchError, setUserIsLoading, userIsLoading}} >
             {children}
         </ContextProvider.Provider>
     )
