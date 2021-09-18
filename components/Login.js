@@ -12,6 +12,7 @@ import { ContextProvider } from "../utils/context";
 import { toast } from "react-toastify";
 import Notification from './Notification'
 import { useRouter } from "next/router";
+import FullPageLoader from "./FullPageLoader";
 
 
 toast.configure()
@@ -193,5 +194,7 @@ function Login() {
 
 export default withAuthUser({
     whenAuthed: AuthAction.REDIRECT_TO_APP,
+    whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
+    LoaderComponent : FullPageLoader,
     appPageURL : '/dashboard'
 })(Login)
