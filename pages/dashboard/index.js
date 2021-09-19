@@ -2,11 +2,13 @@ import { AuthAction, withAuthUser } from "next-firebase-auth"
 import { FaCheckCircle, FaHome, FaSyncAlt } from "react-icons/fa"
 import Card from "../../components/card"
 import FullPageLoader from "../../components/FullPageLoader"
+import Layout from "../../components/Layout"
 
 
 function Dashboard() {
 
     return (
+            <Layout>
                     <section className="relative w-full">
                         <div className="flex items-center justify-end py-4  md:px-1 lg:px-5">
                             <button className="mr-3 plain-btn">Add money</button>
@@ -20,12 +22,12 @@ function Dashboard() {
                                 <Card amount="$20,000" title="Processed (last 30 days)" icon={FaCheckCircle} />
                             </div>
                         </div>
-                    </section>
+            </section>
+            </Layout>
     )
 }
 
 
-export default withAuthUser({
-    whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
-})(Dashboard)
+export default (Dashboard)
+
 

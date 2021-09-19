@@ -156,8 +156,12 @@ function Login() {
             }
             
         } catch(err){
-            console.log(err);
             setUserIsLoading(false);
+            toast.warn(<Notification>{err.message}!</Notification>, {
+                            style: {
+                                backgroundColor: '#db504a',
+                            }
+                        })
         }
     }      
 
