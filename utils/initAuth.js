@@ -1,6 +1,5 @@
 /* globals window */
 import { init } from 'next-firebase-auth'
-import absoluteUrl from 'next-absolute-url'
 
 const TWELVE_DAYS_IN_MS = 12 * 60 * 60 * 24 * 1000
 

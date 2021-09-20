@@ -3,10 +3,8 @@ import { FaCheckCircle, FaHome, FaSyncAlt } from "react-icons/fa"
 import Card from "../../components/card"
 import Layout from "../../components/Layout"
 
-
 function Dashboard(props) {
     
-
     return (
         <Layout {...props}>
                     <section className="relative w-full">
@@ -37,7 +35,6 @@ export const getServerSideProps = withAuthUserTokenSSR({
         }
     }
 })
-
 export default (Dashboard)
 
 

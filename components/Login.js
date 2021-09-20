@@ -5,16 +5,22 @@ import lock from '../assets/lock.png';
 import firebase from 'firebase'
 import { useContext, useState } from "react";
 import {FaEye, FaEyeSlash} from 'react-icons/fa'
-import { client } from "../utils/apolloClient";
-import { USER_BY_EMAIL_ID } from "../utils/gqlQuery";
 import {AuthAction, withAuthUser} from "next-firebase-auth";
 import { ContextProvider } from "../utils/context";
 import { toast } from "react-toastify";
 import Notification from './Notification'
 import FullPageLoader from "./FullPageLoader";
+import { verifyUser } from "../utils/verifyUser";
 
 
 toast.configure()
+
+
+
+const actionCode = {
+    url: "http://localhost:3000",
+     handleCodeInApp: true,
+}
 
 function Login() {
 
@@ -30,127 +36,47 @@ function Login() {
         remember: false,
     })
 
-    firebase.auth().onAuthStateChanged = (firebaseAuth) => {
-        console.log("----------------------->", firebaseAuth)
-    }
+
     
     const handleFormSubmit = async (e) => {
         e.preventDefault();
-        if (user.hasAccount) {
-                try {
-                    setUserIsLoading(true)
-                    const res = await client.query({
-                        query: USER_BY_EMAIL_ID,
-                        variables: {
-                            email : user.email
-                        }
-                    })
-                    if (!res.data.current_user_by_pk) {
-                        setUserIsLoading(false)
-                        toast.warn(<Notification>Provided user email does not match any user in our database!</Notification>, {
-                            style: {
-                                backgroundColor: '#db504a',
-                            }
-                        })
-                        return
-                    } else {
-                        try {
-                            await firebase.auth().signInWithEmailAndPassword(user.email, user.password)
-                            setUserIsLoading(false);
-                        }catch(err) {
-                            setUserIsLoading(false);
-                            switch (err.code) {
-                                case 'auth/invalid-email':
-                                case 'auth/user-disabled':
-                                    toast.warn(<Notification>{err.message}!</Notification>, {
-                                        style: {
-                                            backgroundColor: '#db504a',
-                                        }
-                                    })
-                                    break;
-                                case 'auth/user-not-found':
-                                    toast.warn(<Notification>There is no such user, try creating an account first!!</Notification>, {
-                                        style: {
-                                            backgroundColor: '#db504a',
-                                        }
-                                    })
-                                    break;
-                                case 'auth/wrong-password':
-                                    toast.warn(<Notification>{err.message}!</Notification>, {
-                                        style: {
-                                            backgroundColor: '#db504a',
-                                        }
-                                    })
-                                    break;
-                            }
-                        }
-                    }
-                } catch (err) {
-                    setUserIsLoading(false)
-                    toast.warn(<Notification>{err.message}!</Notification>, {
-                                    style: {
-                                        backgroundColor: '#db504a',
-                                    }
-                                })
-                }               
+        setUserIsLoading(true)
+        try {
+            const isUserVerified = await verifyUser(setUserIsLoading, toast, user.email)
+            if (!isUserVerified) return
+            if (user.hasAccount) {
+                await firebase.auth().signInWithEmailAndPassword(user.email, user.password)
+                setUserIsLoading(false);
             } else {
-                try {
-                    setUserIsLoading(true)
-                    await firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
-                    toast.success(<Notification>Account created successfully!</Notification>)
-                }catch(err){
-                        setUserIsLoading(false);
-                        switch (err.code) {
-                            case 'auth/email-already-in-use':
-                            case 'auth/invalid-email':
-                            case 'auth/user-not-found':
-                                toast.warn(<Notification>{err.message}!</Notification>, {
-                                    style: {
-                                        backgroundColor: '#db504a',
-                                    }
-                                })
-                                break;
-                            case 'auth/weak-password':
-                                toast.warn(<Notification>{err.message}!</Notification>, {
-                                    style: {
-                                        backgroundColor: '#db504a',
-                                    }
-                                })
-                                break;
-                        }
-                    }
+                await firebase.auth().sendSignInLinkToEmail(user.email, actionCode)
+                await firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
+                toast.success(<Notification>Account created successfully!</Notification>)
+                setUserIsLoading(false)
             }
+        } catch (err) {
+            toast.warn(<Notification>{err.message}!</Notification>, {
+                style: {
+                    backgroundColor: '#db504a',
+                }
+            })
+            setUserIsLoading(false)
+        }
     }
 
     const handleGoogleSignIn = async () => {
+        setUserIsLoading(true)
         const provider = new firebase.auth.GoogleAuthProvider()
         try {
-            setUserIsLoading(true)
             const res = await firebase.auth().signInWithPopup(provider)
-            const {data} = await client.query({
-                    query: USER_BY_EMAIL_ID,
-                    variables: {
-                        email: res.user.email
-                    }
-            })
-            if (!data.current_user_by_pk) {
-                        firebase.auth().signOut()
-                        setUserIsLoading(false);
-                        toast.warn(<Notification>Provided user email does not match any user in our database!</Notification>, {
-                            style: {
-                                backgroundColor: '#db504a',
-                            }
-                        })
-                        return
-            }
+            await verifyUser(setUserIsLoading, toast, res.user.email)
             setUserIsLoading(false)
-        } catch(err){
-            setUserIsLoading(false);
+        } catch (err) {
             toast.warn(<Notification>{err.message}!</Notification>, {
-                            style: {
-                                backgroundColor: '#db504a',
-                            }
-                        })
+                style: {
+                    backgroundColor: '#db504a',
+                }
+            })
+            setUserIsLoading(false);
         }
     }      
 
@@ -160,7 +86,8 @@ function Login() {
                 <figure className="w-max mx-auto mb-6">
                     <Image src={logo} alt="Workflow logo" width={65} height={65} />
                 </figure>
-                <h1 className="text-center text-3xl font-extrabold pb-10">Sign in to your account</h1>
+                <h1 className="text-center text-3xl font-extrabold">Sign in to your account</h1>
+                <p className="py-7 text-center px-3">{user.hasAccount ? "Don't have an account?" : "Already have an account?"}<span className="cursor-pointer pl-1.5 text-cyan text-base underline font-extrabold" onClick={() => setUser(prev => ({ ...prev, hasAccount: !prev.hasAccount, passError: "", emailError: "" }))} aria-label="button">{user.hasAccount ? "Create" : "Sign In"}</span></p>
                 <div className="border relative flex flex-col rounded-lg overflow-hidden">
                     <input onChange={(e) => {
                         setUser(prev => ({ ...prev, email: e.target.value}))
@@ -171,12 +98,9 @@ function Login() {
                     border-t py-4 px-5 bg-white" type={show ? "text" : "password"} name="password" placeholder={user.hasAccount ? "Password" : "Create Password"} required />{show ? <FaEyeSlash onClick={() => setShow(false)} className="z-50 top-1/2 transform -translate-y-1/2 absolute bg-gray-100 h-full w-14 px-4 right-0 text-gray-400 cursor-pointer text-2xl" /> : <FaEye onClick={() => setShow(true)} className="z-50 top-1/2 transform -translate-y-1/2 absolute bg-gray-100 h-full w-14 px-4 right-0 text-gray-400 cursor-pointer text-2xl" />}</div>
                     
                 </div>
-                {user.hasAccount && <div className="px-3 flex items-center justify-between py-4">
-                    <p className="flex items-center"><input onChange={(e) => setUser(prev => ({ ...prev, remember: e.target.checked }))} value={user.remember} className="transform scale-125 mr-3" type="checkbox" name="checkbox" />Remember me</p>
-                    <span className="text-sm text-cyan font-semibold cursor-pointer">Forgot your password?</span>
-                </div>}
-                <p className="py-7 text-right px-3">{user.hasAccount ? "Don't have an account?" : "Already have an account?"}<span className="cursor-pointer pl-1.5 text-cyan text-base underline font-extrabold" onClick={() => setUser(prev => ({ ...prev, hasAccount: !prev.hasAccount, passError: "", emailError: "" }))} aria-label="button">{user.hasAccount ? "Create" : "Sign In"}</span></p>
-                <div className="md:static fixed left-0 px-5 md:px-0 bottom-5 w-full">
+                {user.hasAccount && 
+                    <span className="pt-10 px-3 text-sm text-right text-cyan font-semibold cursor-pointer">Forgot your password?</span>}
+                <div className="md:static fixed mt-10 left-0 px-5 md:px-0 bottom-5 w-full">
                     <button type="submit" className="flex items-center justify-center w-full mb-4 btn-indigo"><span className="absolute grid place-items-center left-4"><Image src={lock} alt="Google" width={30} height={30} /></span>   {user.hasAccount ? "Sign In" : "Create Account"}</button>
                     <button type="button" onClick={handleGoogleSignIn} className="flex items-center justify-center  w-full plain-btn"><span className="grid place-items-center absolute left-4"><Image src={google} alt="Google" width={25} height={25} /> </span> Sign in with Google</button>
                 </div>
