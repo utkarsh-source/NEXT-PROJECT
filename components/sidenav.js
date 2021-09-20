@@ -11,7 +11,7 @@ function Sidenav() {
     const {toggleNav} = useContext(ContextProvider)
 
     return (
-        <div className={`bg-cyan ${toggleNav ? "ml-0" : "-ml-64" } transition-m fixed top-0 bottom-0 left-0 w-64 flex-shrink-0  px-3 py-6 `}>
+        <div className={`bg-cyan ${toggleNav ? "ml-0" : "-ml-64" } transition-m fixed top-0 bottom-0 left-0 w-64 md:h-screen flex-shrink-0  px-3 py-6 `}>
                 <div className=" mb-3 flex items-center pl-2 py-0.5">
                     <figure aria-label="logo" className="mr-3 relative w-9">
                         <Image layout="responsive" objectFit="cover" src={logo} alt="Workflow"/>

@@ -7,11 +7,10 @@ import { useContext, useState } from "react";
 import {FaEye, FaEyeSlash} from 'react-icons/fa'
 import { client } from "../utils/apolloClient";
 import { USER_BY_EMAIL_ID } from "../utils/gqlQuery";
-import {AuthAction, useAuthUser, withAuthUser} from "next-firebase-auth";
+import {AuthAction, withAuthUser} from "next-firebase-auth";
 import { ContextProvider } from "../utils/context";
 import { toast } from "react-toastify";
 import Notification from './Notification'
-import { useRouter } from "next/router";
 import FullPageLoader from "./FullPageLoader";
 
 
@@ -23,10 +22,6 @@ function Login() {
 
     const [show, setShow] = useState(false)
 
-    const AuthUser = useAuthUser()
-
-    const router = useRouter()
-
     const [user, setUser] = useState({
         name: "",
         email: "",
@@ -34,6 +29,10 @@ function Login() {
         hasAccount: true,
         remember: false,
     })
+
+    firebase.auth().onAuthStateChanged = (firebaseAuth) => {
+        console.log("----------------------->", firebaseAuth)
+    }
     
     const handleFormSubmit = async (e) => {
         e.preventDefault();
@@ -55,14 +54,10 @@ function Login() {
                         })
                         return
                     } else {
-                        firebase
-                        .auth()
-                        .signInWithEmailAndPassword(user.email, user.password)
-                            .then(res => {
-                            // router.push('/dashboard')
+                        try {
+                            await firebase.auth().signInWithEmailAndPassword(user.email, user.password)
                             setUserIsLoading(false);
-                        })
-                        .catch(err => {
+                        }catch(err) {
                             setUserIsLoading(false);
                             switch (err.code) {
                                 case 'auth/invalid-email':
@@ -88,27 +83,22 @@ function Login() {
                                     })
                                     break;
                             }
-                        })
+                        }
                     }
                 } catch (err) {
-                    console.log(err)
                     setUserIsLoading(false)
-                    return
-                }               
-            } else {
-                setUserIsLoading(true)
-                firebase
-                    .auth()
-                    .createUserWithEmailAndPassword(user.email, user.password)
-                    .then(res => {
-                        toast.warn(<Notification>Account created successfully!</Notification>, {
+                    toast.warn(<Notification>{err.message}!</Notification>, {
                                     style: {
                                         backgroundColor: '#db504a',
                                     }
                                 })
-                        // router.push('/dashboard')
-                    })
-                    .catch(err => {
+                }               
+            } else {
+                try {
+                    setUserIsLoading(true)
+                    await firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
+                    toast.success(<Notification>Account created successfully!</Notification>)
+                }catch(err){
                         setUserIsLoading(false);
                         switch (err.code) {
                             case 'auth/email-already-in-use':
@@ -128,7 +118,7 @@ function Login() {
                                 })
                                 break;
                         }
-                    })
+                    }
             }
     }
 
