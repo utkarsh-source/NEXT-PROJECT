@@ -1,14 +1,14 @@
-import { AuthAction, withAuthUser } from "next-firebase-auth"
+import { AuthAction, withAuthUserTokenSSR } from "next-firebase-auth"
 import { FaCheckCircle, FaHome, FaSyncAlt } from "react-icons/fa"
 import Card from "../../components/card"
-import FullPageLoader from "../../components/FullPageLoader"
 import Layout from "../../components/Layout"
 
 
-function Dashboard() {
+function Dashboard(props) {
+    
 
     return (
-            <Layout>
+        <Layout {...props}>
                     <section className="relative w-full">
                         <div className="flex items-center justify-end py-4  md:px-1 lg:px-5">
                             <button className="mr-3 plain-btn">Add money</button>
@@ -27,6 +27,16 @@ function Dashboard() {
     )
 }
 
+
+export const getServerSideProps = withAuthUserTokenSSR({
+    whenUnauthed : AuthAction.REDIRECT_TO_LOGIN
+})(async ({ AuthUser }) => {
+    return {
+        props: {
+            email: AuthUser.email,
+        }
+    }
+})
 
 export default (Dashboard)
 

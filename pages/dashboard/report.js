@@ -1,20 +1,22 @@
-import { AuthAction, withAuthUser } from "next-firebase-auth"
-import FullPageLoader from "../../components/FullPageLoader"
+import { AuthAction, withAuthUserTokenSSR } from "next-firebase-auth"
 import Layout from "../../components/Layout"
 
-function Reports() {
+function Reports(props) {
     return (
-        <Layout>
+        <Layout {...props}>
             <h1>Report page</h1>
         </Layout>
     )
 }
 
-// export default withAuthUser({
-//     whenUnauthedBeforeInit : AuthAction.SHOW_LOADER,
-//     whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
-//     LoaderComponent : FullPageLoader
-// })(Reports)
-
+export const getServerSideProps = withAuthUserTokenSSR({
+    whenUnauthed : AuthAction.REDIRECT_TO_LOGIN
+})(async ({ AuthUser }) => {
+    return {
+        props: {
+            email: AuthUser.email,
+        }
+    }
+})
 
 export default Reports

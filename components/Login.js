@@ -151,10 +151,9 @@ function Login() {
                                 backgroundColor: '#db504a',
                             }
                         })
-                    } else {
-                        setUserIsLoading(false)
+                        return
             }
-            
+            setUserIsLoading(false)
         } catch(err){
             setUserIsLoading(false);
             toast.warn(<Notification>{err.message}!</Notification>, {
@@ -179,7 +178,7 @@ function Login() {
                     <div className="relative w-full"><input onChange={(e) => {
                         setUser(prev => ({ ...prev, password: e.target.value}))
                     }} value={user.password} className="w-full focus:outline-none
-                    border-t py-4 px-5 bg-white" type={show ? "text" : "password"} name="password" placeholder={user.hasAccount ? "Password" : "Create Password"} required />{show ? <FaEyeSlash onClick={() => setShow(false)} className="z-50 top-1/2 transform -translate-y-1/2 absolute right-4 text-gray-400 cursor-pointer text-2xl" /> : <FaEye onClick={() => setShow(true)} className="z-50 top-1/2 transform -translate-y-1/2 absolute right-4 text-gray-400 cursor-pointer text-2xl" />}</div>
+                    border-t py-4 px-5 bg-white" type={show ? "text" : "password"} name="password" placeholder={user.hasAccount ? "Password" : "Create Password"} required />{show ? <FaEyeSlash onClick={() => setShow(false)} className="z-50 top-1/2 transform -translate-y-1/2 absolute bg-gray-100 h-full w-14 px-4 right-0 text-gray-400 cursor-pointer text-2xl" /> : <FaEye onClick={() => setShow(true)} className="z-50 top-1/2 transform -translate-y-1/2 absolute bg-gray-100 h-full w-14 px-4 right-0 text-gray-400 cursor-pointer text-2xl" />}</div>
                     
                 </div>
                 {user.hasAccount && <div className="px-3 flex items-center justify-between py-4">
