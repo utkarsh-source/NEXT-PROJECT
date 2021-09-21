@@ -18,7 +18,7 @@ toast.configure()
 
 
 const actionCode = {
-    url: "http://localhost:3000",
+    url: process.env.NODE_ENV === "production" ? "https://next-project-theta.vercel.app" : "http://localhost:3000",
      handleCodeInApp: true,
 }
 
